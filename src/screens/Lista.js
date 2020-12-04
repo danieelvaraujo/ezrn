@@ -26,9 +26,10 @@ const Lista = ({ navigation }) => {
   const fotos = useSelector((state) => state.fotos.fotos);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fotosActions.carregarFotos());
-  }, [dispatch]);
+  dispatch(fotosActions.carregarFotos());
+
+  // useEffect(() => {
+  //     }, [dispatch]);
 
   useEffect(() => {
     checarNet();
@@ -70,7 +71,7 @@ const Lista = ({ navigation }) => {
             color={Colors.foto}
             title="Nova foto"
             onPress={() =>
-              navigation.navigate("NovaFoto", {
+              navigation.navigate("SalvarUnica", {
                 conexao: rede.isConnected,
               })
             }

@@ -18,12 +18,13 @@ import * as fotosActions from "../store/actions/fotosActions";
 
 import Colors from "../constants/Colors";
 
-const NovaFoto = ({ navigation, route }) => {
+const SalvarUnica = ({ navigation, route }) => {
   const { conexao } = route.params;
 
   const [foto, setFoto] = useState(null);
   const [local, setLocal] = useState(null);
   const [enviando, setEnviando] = useState(false);
+  const [desligar, setDesligar] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -54,13 +55,24 @@ const NovaFoto = ({ navigation, route }) => {
   };
 
   const getLocalizacao = async () => {
-    try {
-      const localizacao = await Location.getCurrentPositionAsync({
-        timeout: 10000,
-      });
-      setLocal(localizacao);
-    } catch (err) {
-      console.log(err);
+    const temPermissao = await verificarPermissoes();
+    if (!temPermissao) {
+      return;
+    } else {
+      try {
+        const localizacao = await Location.getCurrentPositionAsync({
+          timeout: 10000,
+        });
+        setLocal(localizacao);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  const desligarNet = () => {
+    if (conexao) {
+      setDesligar(!conexao.isConnect);
     }
   };
 
@@ -99,6 +111,14 @@ const NovaFoto = ({ navigation, route }) => {
     ]);
   };
 
+  const abrirBiblioteca = async () => {
+    const temPermissao = await verificarPermissoes();
+    if (!temPermissao) {
+      return;
+    }
+    navigation.navigate("Seletor");
+  };
+
   return (
     <ScrollView>
       {enviando ? (
@@ -128,7 +148,7 @@ const NovaFoto = ({ navigation, route }) => {
                 <Button
                   title="Escolher foto existente"
                   color={Colors.tirar}
-                  onPress={() => navigation.navigate("ImageBrowser")}
+                  onPress={abrirBiblioteca}
                 />
               </View>
             </View>
@@ -149,7 +169,7 @@ const NovaFoto = ({ navigation, route }) => {
   );
 };
 
-export default NovaFoto;
+export default SalvarUnica;
 
 const styles = StyleSheet.create({
   form: {

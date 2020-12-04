@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import * as ImageManipulator from "expo-image-manipulator";
 import { ImageBrowser } from "expo-image-picker-multiple";
 
-const ImageBrowserScreen = ({ navigation }) => {
+const Seletor = ({ navigation }) => {
   const [loading, setLoading] = useState();
   const [arrayFotos, setArrayFotos] = useState([]);
 
@@ -31,7 +31,7 @@ const ImageBrowserScreen = ({ navigation }) => {
 
   const checkLoading = () => {
     if (loading === false) {
-      navigation.navigate("Main", { photos: arrayFotos });
+      navigation.navigate("SalvarMultiplas", { photos: arrayFotos });
     }
   };
 
@@ -86,7 +86,7 @@ const ImageBrowserScreen = ({ navigation }) => {
   );
 };
 
-export default ImageBrowserScreen;
+export default Seletor;
 
 const styles = StyleSheet.create({
   flex: {

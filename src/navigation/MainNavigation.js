@@ -4,12 +4,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Colors from "../constants/Colors";
-import Lista from "../screens/Lista";
-import NovaFoto from "../screens/NovaFoto";
-import Detalhes from "../screens/Detalhes";
 
-import Main from "../screens/Main";
-import ImageBrowser from "../screens/ImageBrowserScreen";
+import Lista from "../screens/Lista";
+import SalvarUnica from "../screens/SalvarUnica";
+import Detalhes from "../screens/Detalhes";
+import SalvarMultiplas from "../screens/SalvarMultiplas";
+import Seletor from "../screens/Seletor";
 
 const Stack = createStackNavigator();
 
@@ -36,19 +36,19 @@ const MainNavigation = () => {
           options={{ title: "Detalhes da foto" }}
         />
         <Stack.Screen
-          name="NovaFoto"
-          component={NovaFoto}
+          name="SalvarUnica"
+          component={SalvarUnica}
           options={{ title: "Salvar nova foto" }}
         />
         <Stack.Screen
-          name="ImageBrowser"
-          component={ImageBrowser}
-          options={{ title: "Selected 0 files" }}
+          name="Seletor"
+          component={Seletor}
+          options={{ title: "Selecione as fotos desejadas" }}
         />
         <Stack.Screen
-          name="Main"
-          component={Main}
-          options={{ title: "Escolher fotos" }}
+          name="SalvarMultiplas"
+          component={SalvarMultiplas}
+          options={{ title: "Salvar novas fotos" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

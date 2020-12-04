@@ -12,11 +12,11 @@ import {
 import Colors from "../constants/Colors";
 import * as Location from "expo-location";
 
-import { abrirCamera } from "../screens/NovaFoto";
+import { abrirCamera } from "./SalvarUnica";
 import { useDispatch } from "react-redux";
 import * as fotosActions from "../store/actions/fotosActions";
 
-const MainScreen = ({ navigation, route }) => {
+const SalvarMultiplas = ({ navigation, route }) => {
   const { conexao } = route.params;
   const { photos } = route.params;
 
@@ -61,11 +61,10 @@ const MainScreen = ({ navigation, route }) => {
         .catch((err) => {
           console.log("Deu erro: " + err);
         });
-
-      Alert.alert("Sucesso", "Sua foto foi enviada", [
-        { text: "Ok", onPress: finalizar },
-      ]);
     }
+    Alert.alert("Sucesso", "Sua foto foi enviada", [
+      { text: "Ok", onPress: finalizar },
+    ]);
   };
 
   const renderImage = (item, i) => {
@@ -103,7 +102,7 @@ const MainScreen = ({ navigation, route }) => {
                 <Button
                   title="Escolher foto existente"
                   color={Colors.tirar}
-                  onPress={() => navigation.navigate("ImageBrowser")}
+                  onPress={() => navigation.navigate("Seletor")}
                 />
               </View>
             </View>
@@ -124,7 +123,7 @@ const MainScreen = ({ navigation, route }) => {
   );
 };
 
-export default MainScreen;
+export default SalvarMultiplas;
 
 const styles = StyleSheet.create({
   form: {
