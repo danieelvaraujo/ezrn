@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,7 +10,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import ReduxThunk from "redux-thunk";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
@@ -137,12 +136,12 @@ const NovaFoto = ({ navigation, route }) => {
 
           {foto ? (
             <Button
-              title="Salvar fotos"
+              title="Salvar foto"
               color={Colors.foto}
               onPress={salvarFoto}
             />
           ) : (
-            <Button title="Salvar fotos" disabled onPress={salvarFoto} />
+            <Button title="Salvar foto" disabled onPress={salvarFoto} />
           )}
         </View>
       )}

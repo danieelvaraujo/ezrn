@@ -7,7 +7,7 @@ export const SET_FOTOS = "SET_FOTOS";
 
 export const addFoto = (imagemUri, localizacao) => {
   const googleApiKey = "AIzaSyD6BlvLFCdl0ZiFoZane7T6Z9eOpP_vkcU";
-  console.log(localizacao);
+  // console.log(localizacao);
 
   return async (dispatch) => {
     const response = await fetch(

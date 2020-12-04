@@ -9,7 +9,7 @@ import { init } from "./src/helpers/db";
 
 init()
   .then(() => {
-    // console.log("SQLite iniciado");
+    console.log("SQLite iniciado");
   })
   .catch((err) => {
     console.log("Erro ao inicializar o SQLite: ", err);

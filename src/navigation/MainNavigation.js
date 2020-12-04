@@ -45,11 +45,11 @@ const MainNavigation = () => {
           component={ImageBrowser}
           options={{ title: "Selected 0 files" }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Main"
           component={Main}
           options={{ title: "Escolher fotos" }}
-        /> */}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
