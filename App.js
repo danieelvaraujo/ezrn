@@ -1,21 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import ReduxThunk from "redux-thunk";
+
+import MainNavigation from "./src/navigation/MainNavigation";
+import fotosReducer from "./src/store/reducers/fotosReducer";
+import { init } from "./src/helpers/db";
+
+init()
+  .then(() => {
+    // console.log("SQLite iniciado");
+  })
+  .catch((err) => {
+    console.log("Erro ao inicializar o SQLite: ", err);
+  });
+
+const rootReducer = combineReducers({
+  fotos: fotosReducer,
+});
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <MainNavigation />
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
