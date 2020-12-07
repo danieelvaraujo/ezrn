@@ -13,25 +13,35 @@ import { useDispatch } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
+import NetInfo from "@react-native-community/netinfo";
 
 import * as fotosActions from "../store/actions/fotosActions";
 
 import Colors from "../constants/Colors";
 
 const SalvarUnica = ({ navigation, route }) => {
-  const { conexao } = route.params;
-
   const [foto, setFoto] = useState(null);
   const [local, setLocal] = useState(null);
   const [enviando, setEnviando] = useState(false);
-  const [desligar, setDesligar] = useState(false);
+  const [rede, setRede] = useState(false);
 
   const dispatch = useDispatch();
 
+  // Vai conferir a conexão quando abrir a tela de seleção
   useEffect(() => {
-    getLocalizacao();
-  }, [foto]);
+    getConexao();
+  }, []);
 
+  useEffect(() => {
+    console.log(rede);
+  }, [rede]);
+
+  useEffect(() => {
+    salvarFoto();
+  }, []);
+
+  // Ao tentar enviar uma foto, vai conferir a localização
+  // do usuário para enviar as coordenadas junto da foto
   useEffect(() => {
     getLocalizacao();
     // console.log("Mudou de state " + enviando);
@@ -54,12 +64,27 @@ const SalvarUnica = ({ navigation, route }) => {
     return true;
   };
 
+  // Fazer um setTimeout para que essa função se repita à cada alguns minutos
+  const getConexao = () => {
+    NetInfo.fetch().then((conexao) => {
+      if (!conexao) {
+        console.log("Sem conexão.");
+      }
+      setRede(conexao.isConnected);
+    });
+  };
+
+  const toggleNet = () => {
+    rede ? setRede(false) : setRede(true);
+  };
+
   const getLocalizacao = async () => {
     const temPermissao = await verificarPermissoes();
     if (!temPermissao) {
       return;
     } else {
       try {
+        // Espera até 10 segundos em cada tentativa
         const localizacao = await Location.getCurrentPositionAsync({
           timeout: 10000,
         });
@@ -70,18 +95,11 @@ const SalvarUnica = ({ navigation, route }) => {
     }
   };
 
-  const desligarNet = () => {
-    if (conexao) {
-      setDesligar(!conexao.isConnect);
-    }
-  };
-
   const abrirCamera = async () => {
     const temPermissao = await verificarPermissoes();
     if (!temPermissao) {
       return;
     }
-
     const imagem = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [16, 9],
@@ -97,7 +115,7 @@ const SalvarUnica = ({ navigation, route }) => {
     navigation.goBack();
   };
 
-  const salvarFoto = () => {
+  const despachar = () => {
     dispatch(fotosActions.addFoto(foto, local))
       .then(() => {
         setEnviando(true);
@@ -111,12 +129,22 @@ const SalvarUnica = ({ navigation, route }) => {
     ]);
   };
 
-  const abrirBiblioteca = async () => {
-    const temPermissao = await verificarPermissoes();
-    if (!temPermissao) {
-      return;
+  const salvarFoto = async () => {
+    await rede;
+    if (!rede) {
+      console.log("Está sem rede!");
+    } else {
+      despachar();
     }
-    navigation.navigate("Seletor");
+  };
+
+  const abrirBiblioteca = async () => {
+    // const temPermissao = await verificarPermissoes();
+    // if (!temPermissao) {
+    //   return;
+    // }
+    // navigation.navigate("Seletor");
+    console.log(rede);
   };
 
   return (
@@ -151,6 +179,13 @@ const SalvarUnica = ({ navigation, route }) => {
                   onPress={abrirBiblioteca}
                 />
               </View>
+              {/* <View style={{ margin: 2 }}>
+                <Button
+                  title={rede ? "Desligar net" : "Ligar net"}
+                  color={Colors.tirar}
+                  onPress={toggleNet}
+                />
+              </View> */}
             </View>
           </View>
 
