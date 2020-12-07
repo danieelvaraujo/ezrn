@@ -33,12 +33,16 @@ const SalvarUnica = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
-    console.log(rede);
+    if (foto) {
+      salvarFoto();
+    } else {
+      return;
+    }
   }, [rede]);
 
-  useEffect(() => {
-    salvarFoto();
-  }, []);
+  // useEffect(() => {
+  //   salvarFoto();
+  // }, [rede]);
 
   // Ao tentar enviar uma foto, vai conferir a localização
   // do usuário para enviar as coordenadas junto da foto
@@ -130,9 +134,11 @@ const SalvarUnica = ({ navigation, route }) => {
   };
 
   const salvarFoto = async () => {
-    await rede;
+    await getConexao();
     if (!rede) {
-      console.log("Está sem rede!");
+      Alert.alert("Celular sem internet", "Conecte-se para continuar", [
+        { text: "Ok" },
+      ]);
     } else {
       despachar();
     }
@@ -155,7 +161,14 @@ const SalvarUnica = ({ navigation, route }) => {
         </View>
       ) : (
         <View style={styles.form}>
-          <Text style={styles.titulo}>Envie aqui a foto dos documentos</Text>
+          <View>
+            {rede ? (
+              <View style={styles.bolaVerde} />
+            ) : (
+              <View style={styles.bolaVermelha} />
+            )}
+            <Text style={styles.titulo}>Envie aqui a foto dos documentos</Text>
+          </View>
           <View style={styles.seletor}>
             <View style={styles.visualizacao}>
               {!foto ? (
@@ -179,13 +192,13 @@ const SalvarUnica = ({ navigation, route }) => {
                   onPress={abrirBiblioteca}
                 />
               </View>
-              {/* <View style={{ margin: 2 }}>
+              <View style={{ margin: 2 }}>
                 <Button
                   title={rede ? "Desligar net" : "Ligar net"}
                   color={Colors.tirar}
                   onPress={toggleNet}
                 />
-              </View> */}
+              </View>
             </View>
           </View>
 
@@ -240,5 +253,17 @@ const styles = StyleSheet.create({
   imagem: {
     width: "100%",
     height: "100%",
+  },
+  bolaVerde: {
+    width: 25,
+    height: 25,
+    borderRadius: 50,
+    backgroundColor: "green",
+  },
+  bolaVermelha: {
+    width: 25,
+    height: 25,
+    borderRadius: 50,
+    backgroundColor: "red",
   },
 });

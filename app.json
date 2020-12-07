@@ -21,7 +21,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.easydocs.easyapp"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
