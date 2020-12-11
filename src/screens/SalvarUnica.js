@@ -29,7 +29,11 @@ const SalvarUnica = ({ navigation, route }) => {
 
   // Vai conferir a conexão quando abrir a tela de seleção
   useEffect(() => {
-    getConexao();
+    const checarNet = setInterval(() => {
+      getConexao();
+      // console.log("Internet checada");
+    }, 30000);
+    return () => clearInterval(checarNet);
   }, []);
 
   useEffect(() => {
@@ -40,15 +44,10 @@ const SalvarUnica = ({ navigation, route }) => {
     }
   }, [rede]);
 
-  // useEffect(() => {
-  //   salvarFoto();
-  // }, [rede]);
-
   // Ao tentar enviar uma foto, vai conferir a localização
   // do usuário para enviar as coordenadas junto da foto
   useEffect(() => {
     getLocalizacao();
-    // console.log("Mudou de state " + enviando);
   }, [enviando]);
 
   const verificarPermissoes = async () => {
@@ -116,7 +115,7 @@ const SalvarUnica = ({ navigation, route }) => {
 
   const finalizar = () => {
     setEnviando(false);
-    navigation.goBack();
+    navigation.navigate("Listagem");
   };
 
   const despachar = () => {
@@ -145,12 +144,12 @@ const SalvarUnica = ({ navigation, route }) => {
   };
 
   const abrirBiblioteca = async () => {
-    // const temPermissao = await verificarPermissoes();
-    // if (!temPermissao) {
-    //   return;
-    // }
-    // navigation.navigate("Seletor");
-    console.log(rede);
+    const temPermissao = await verificarPermissoes();
+    if (!temPermissao) {
+      return;
+    }
+    navigation.navigate("Seletor");
+    // console.log(rede);
   };
 
   return (

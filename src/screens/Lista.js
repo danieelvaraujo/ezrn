@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, FlatList, Button, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import NetInfo from "@react-native-community/netinfo";
 
 import Colors from "../constants/Colors";
 import FotoItem from "../components/FotoItem";
@@ -42,6 +41,13 @@ const Lista = ({ navigation }) => {
             color={Colors.foto}
             title="Nova foto"
             onPress={() => navigation.navigate("SalvarUnica")}
+          />
+        </View>
+        <View style={{ margin: 5 }}>
+          <Button
+            color={Colors.foto}
+            title="Trajeto"
+            onPress={() => navigation.navigate("Tracker")}
           />
         </View>
       </View>

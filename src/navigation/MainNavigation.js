@@ -10,6 +10,8 @@ import SalvarUnica from "../screens/SalvarUnica";
 import Detalhes from "../screens/Detalhes";
 import SalvarMultiplas from "../screens/SalvarMultiplas";
 import Seletor from "../screens/Seletor";
+import Mapa from "../screens/Mapa";
+import Tracker from "../screens/Tracker";
 
 const Stack = createStackNavigator();
 
@@ -22,7 +24,7 @@ const MainNavigation = () => {
             backgroundColor: Platform.OS === "android" ? Colors.header : "",
           },
           headerTintColor: Platform.OS === "android" ? "white" : Colors.primary,
-          headerTitleStyle: { alignSelf: "center" },
+          headerTitleStyle: { alignSelf: "center", marginRight: 50 },
         }}
       >
         <Stack.Screen
@@ -49,6 +51,16 @@ const MainNavigation = () => {
           name="SalvarMultiplas"
           component={SalvarMultiplas}
           options={{ title: "Salvar novas fotos" }}
+        />
+        <Stack.Screen
+          name="Mapa"
+          component={Mapa}
+          options={{ title: "Trajeto" }}
+        />
+        <Stack.Screen
+          name="Tracker"
+          component={Tracker}
+          options={{ title: "Trajeto" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

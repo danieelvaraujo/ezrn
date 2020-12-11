@@ -11,24 +11,21 @@ import {
 } from "react-native";
 import Colors from "../constants/Colors";
 import * as Location from "expo-location";
+import NetInfo from "@react-native-community/netinfo";
 
 import { abrirCamera } from "./SalvarUnica";
 import { useDispatch } from "react-redux";
 import * as fotosActions from "../store/actions/fotosActions";
 
 const SalvarMultiplas = ({ navigation, route }) => {
-  const { conexao } = route.params;
   const { photos } = route.params;
 
+  const [fotos, setFotos] = useState([]);
   const [local, setLocal] = useState(null);
   const [enviando, setEnviando] = useState(false);
-  const [fotos, setFotos] = useState([]);
+  const [rede, setRede] = useState(false);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    getLocalizacao();
-  }, [photos]);
 
   useEffect(() => {
     if (photos) {
@@ -36,12 +33,34 @@ const SalvarMultiplas = ({ navigation, route }) => {
     }
   }, [photos]);
 
+  useEffect(() => {
+    const checarNet = setInterval(() => {
+      getConexao();
+      // console.log("Internet checada");
+    }, 30000);
+    return () => clearInterval(checarNet);
+  }, []);
+
+  useEffect(() => {
+    getLocalizacao();
+  }, [enviando]);
+
+  const getConexao = () => {
+    NetInfo.fetch().then((conexao) => {
+      if (!conexao) {
+        console.log("Sem conexão.");
+      }
+      setRede(conexao.isConnected);
+    });
+  };
+
   const getLocalizacao = async () => {
     try {
       const localizacao = await Location.getCurrentPositionAsync({
         timeout: 10000,
       });
       setLocal(localizacao);
+      console.log(localizacao);
     } catch (err) {
       console.log(err);
     }
@@ -52,7 +71,7 @@ const SalvarMultiplas = ({ navigation, route }) => {
     navigation.navigate("Listagem");
   };
 
-  const salvarFoto = () => {
+  const despachar = () => {
     for (let photo of photos) {
       dispatch(fotosActions.addFoto(photo.uri, local))
         .then(() => {
@@ -62,9 +81,21 @@ const SalvarMultiplas = ({ navigation, route }) => {
           console.log("Deu erro: " + err);
         });
     }
+
     Alert.alert("Sucesso", "Sua foto foi enviada", [
       { text: "Ok", onPress: finalizar },
     ]);
+  };
+
+  const salvarFoto = async () => {
+    await getConexao();
+    if (!rede) {
+      Alert.alert("Celular sem internet", "Conecte-se para continuar", [
+        { text: "Ok" },
+      ]);
+    } else {
+      despachar();
+    }
   };
 
   const renderImage = (item, i) => {
