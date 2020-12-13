@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 import { useSelector } from "react-redux";
 
-const Detalhes = ({ route, navigation }) => {
+const DeetsFotos = ({ route, navigation }) => {
   const { fotoId } = route.params;
 
   const fotoSelecionada = useSelector((state) =>
@@ -32,7 +32,7 @@ const Detalhes = ({ route, navigation }) => {
   );
 };
 
-export default Detalhes;
+export default DeetsFotos;
 
 const styles = StyleSheet.create({
   alinhar: {

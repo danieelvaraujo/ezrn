@@ -31,7 +31,6 @@ const SalvarUnica = ({ navigation, route }) => {
   useEffect(() => {
     const checarNet = setInterval(() => {
       getConexao();
-      // console.log("Internet checada");
     }, 30000);
     return () => clearInterval(checarNet);
   }, []);
@@ -149,7 +148,6 @@ const SalvarUnica = ({ navigation, route }) => {
       return;
     }
     navigation.navigate("Seletor");
-    // console.log(rede);
   };
 
   return (

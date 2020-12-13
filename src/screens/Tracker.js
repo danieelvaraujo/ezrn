@@ -4,16 +4,15 @@ import {
   Text,
   View,
   Button,
-  ActivityIndicator,
+  FlatList,
+  ScrollView,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
-
 import * as trackerActions from "../store/actions/trackerActions";
-
 import Colors from "../constants/Colors";
-import { FlatList } from "react-native-gesture-handler";
+
 const LOCATION_TASK_NAME = "background-location-task";
 
 const Tracker = () => {
@@ -27,15 +26,17 @@ const Tracker = () => {
   // cada vez que o switch ficar on, vai salvar os endereços no array
   // depois que salvar, o switch fica off e espera o próximo track
   useEffect(() => {
-    console.log("tracking: " + tracking);
+    salvarEnderecos();
   }, [tracking]);
 
   //   // atualiza a página quando mudar o state
   useEffect(() => {
-    console.log("onTracker: " + onTracker);
+    // console.log("onTracker: " + onTracker);
   }, [onTracker]);
 
-  useEffect(() => {}, [enderecos]);
+  useEffect(() => {
+    // console.log(enderecos);
+  }, [enderecos]);
 
   // O tracker começa ao apertar o botão de iniciar
   // Vai salvar a localização do usuário a cada X metros ou Y milissegundos
@@ -73,23 +74,28 @@ const Tracker = () => {
 
   // Vai ser enviado a database o array com todo o trajeto quando o usuario clicar em finalizar
   const despachar = () => {
-    // dispatch(trackerActions.addTracker(enderecos))
-    //   .then(() => {
-    // Array de endereços enviado
-    //   })
-    //   .catch((err) => {
-    //     console.log("Deu erro: " + err);
-    //   });
+    dispatch(trackerActions.addTracker(enderecos))
+      .then(() => {
+        console.log("Array enviado");
+        // Array de endereços enviado
+      })
+      .catch((err) => {
+        console.log("Deu erro: " + err);
+      });
   };
 
   // Salva o novo endereço do tracker para ser inserido depois ao array
   const salvarEnderecos = () => {
-    if (tracking === true) {
-      setEnderecos([...enderecos, novoEndereco]);
-      setTracking(false);
-
-      //   console.log(enderecos);
+    if (!novoEndereco.locations) {
+      return;
+    } else {
+      if (tracking === true) {
+        // if (!novoEndereco)
+        setEnderecos([...enderecos, novoEndereco]);
+        setTracking(false);
+      }
     }
+    // console.log(novoEndereco.locations);
   };
 
   //   Location task name
@@ -100,95 +106,94 @@ const Tracker = () => {
       return;
     }
     if (data) {
-      // Salva o objeto na constante data
-      // Caso o array seja a lista de endereços + o novo endereço, o push na database deve substituir o existente
+      // Salva o objeto data na constante novoEndereco
       setTracking(true);
       setNovoEndereco(data);
       salvarEnderecos();
     }
   });
 
-  const cartaoEndereco = ({ item }) => {
-    console.log(item.locations[0].coords.latitude);
+  const renderItem = (item) => {
+    if (item.item.locations) {
+      return (
+        <ScrollView
+          key={item.index}
+          contentContainerStyle={{
+            padding: 2,
+            margin: 5,
+            width: "70%",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+          }}
+        >
+          <View>
+            <Text style={{ textAlign: "center" }}>ID: {item.index}</Text>
+          </View>
+          <View>
+            <Text style={{ textAlign: "center" }}>
+              Latitude: {item.item.locations[0].coords.latitude}
+            </Text>
+            <Text style={{ textAlign: "center" }}>
+              Longitude: {item.item.locations[0].coords.longitude}
+            </Text>
+          </View>
+        </ScrollView>
+      );
+    } else {
+      return;
+    }
   };
 
   return (
-    <View
-      style={{
-        flexDirection: "column",
-        justifyContent: "space-between",
-      }}
-    >
-      <View style={{ alignItems: "center" }}>
-        <View style={{ paddingTop: 10, width: 250, margin: 3 }}>
-          <Button
-            title="Começar trajeto"
-            color={Colors.comecar}
-            onPress={comecarTracker}
-          />
-        </View>
-        <View style={{ paddingBottom: 10, width: 250, margin: 3 }}>
-          <Button
-            title="Terminar trajeto"
-            color={Colors.terminar}
-            onPress={terminarTracker}
-          />
-        </View>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          {onTracker ? (
-            <View style={styles.bolaVerde} />
-          ) : (
-            <View style={styles.bolaVermelha} />
-          )}
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: 25,
-              fontWeight: "bold",
-              marginLeft: 15,
-            }}
-          >
-            Trajeto
-          </Text>
-        </View>
+    <View style={{ alignItems: "center" }}>
+      <View style={{ paddingTop: 10, width: 250, margin: 3 }}>
+        <Button
+          title="Começar trajeto"
+          color={Colors.comecar}
+          onPress={comecarTracker}
+        />
+      </View>
+      <View style={{ paddingBottom: 10, width: 250, margin: 3 }}>
+        <Button
+          title="Terminar trajeto"
+          color={Colors.terminar}
+          onPress={terminarTracker}
+        />
+      </View>
 
-        <View style={{ alignItems: "flex-start" }}>
-          <View style={{ margin: 10 }}>
-            {enderecos ? (
-              <FlatList
-                data={enderecos}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item, index }) => (
-                  <View
-                    key={item.id}
-                    style={{
-                      width: 300,
-                      height: 100,
-                      borderWidth: 1,
-                      borderColor: "black",
-                      padding: 2,
-                      margin: 5,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text>
-                      Latitude: {item.locations[index].coords.latitude}
-                    </Text>
-                    <Text>
-                      Longitude: {item.locations[index].coords.longitude}
-                    </Text>
-                  </View>
-                )}
-                // renderItem={cartaoEndereco}
-              />
-            ) : (
-              <View>
-                <Text>Sem nada para mostrar no momento</Text>
-              </View>
-            )}
-          </View>
-        </View>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginBottom: 25 }}
+      >
+        {onTracker ? (
+          <View style={styles.bolaVerde} />
+        ) : (
+          <View style={styles.bolaVermelha} />
+        )}
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 25,
+            fontWeight: "bold",
+            marginLeft: 15,
+          }}
+        >
+          Locais salvos
+        </Text>
+      </View>
+
+      <View>
+        {enderecos.length === 0 ? (
+          <Text style={{ textAlign: "center" }}>
+            Comece o trajeto para salvar os endereços
+          </Text>
+        ) : (
+          <FlatList
+            data={enderecos}
+            keyExtractor={(item) => item.id}
+            renderItem={(item) => renderItem(item)}
+          />
+        )}
       </View>
     </View>
   );

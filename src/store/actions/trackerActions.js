@@ -1,16 +1,19 @@
-import * as FileSystem from "expo-file-system";
-
 import { inserirTracker, fetchTrackers } from "../../helpers/db";
 
 export const ADD_TRACKER = "ADD_TRACKER";
-export const SET_TRACKERSS = "SET_TRACKERS";
+export const SET_TRACKERS = "SET_TRACKERS";
 
 export const addTracker = (localizacao) => {
   const googleApiKey = "AIzaSyD6BlvLFCdl0ZiFoZane7T6Z9eOpP_vkcU";
 
+  // console.log(localizacao[0].locations[0].coords);
+
+  const objLatitude = localizacao[0].locations[0].coords.latitude;
+  const objLongitude = localizacao[0].locations[0].coords.longitude;
+
   return async (dispatch) => {
     const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${localizacao.coords.latitude},${localizacao.coords.longitude}&key=${googleApiKey}`
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${objLatitude},${objLongitude}&key=${googleApiKey}`
     );
 
     if (!response.ok) {
@@ -29,8 +32,8 @@ export const addTracker = (localizacao) => {
     try {
       const dbResultado = await inserirTracker(
         endereco,
-        localizacao.coords.latitude,
-        localizacao.coords.longitude
+        objLatitude,
+        objLongitude
       );
       dispatch({
         type: ADD_TRACKER,
@@ -38,8 +41,8 @@ export const addTracker = (localizacao) => {
           id: dbResultado.insertId,
           endereco: endereco,
           coords: {
-            lat: localizacao.lat,
-            lng: localizacao.lng,
+            lat: objLatitude,
+            lng: objLongitude,
           },
         },
       });

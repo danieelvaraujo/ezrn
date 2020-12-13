@@ -1,19 +1,39 @@
-import React, { useEffect } from "react";
-import { StyleSheet, View, FlatList, Button, Alert } from "react-native";
+import React from "react";
+import { StyleSheet, View, FlatList, Button } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import Colors from "../constants/Colors";
 import FotoItem from "../components/FotoItem";
 import * as fotosActions from "../store/actions/fotosActions";
 
-const Lista = ({ navigation }) => {
+const ListaFotos = ({ navigation }) => {
   const fotos = useSelector((state) => state.fotos.fotos);
+
   const dispatch = useDispatch();
 
   dispatch(fotosActions.carregarFotos());
 
   return (
     <View style={{ height: "100%" }}>
+      <View
+        style={{ margin: 10, flexDirection: "row", justifyContent: "center" }}
+      >
+        <View style={{ margin: 5 }}>
+          <Button
+            color={Colors.foto}
+            title="Lista de fotos"
+            onPress={() => navigation.navigate("Fotos")}
+          />
+        </View>
+        <View style={{ margin: 5 }}>
+          <Button
+            color={Colors.foto}
+            title="Lista de trackers"
+            onPress={() => navigation.navigate("Trackers")}
+          />
+        </View>
+      </View>
+
       <FlatList
         data={fotos}
         keyExtractor={(item) => item.id}
@@ -55,6 +75,6 @@ const Lista = ({ navigation }) => {
   );
 };
 
-export default Lista;
+export default ListaFotos;
 
 const styles = StyleSheet.create({});

@@ -36,7 +36,6 @@ const SalvarMultiplas = ({ navigation, route }) => {
   useEffect(() => {
     const checarNet = setInterval(() => {
       getConexao();
-      // console.log("Internet checada");
     }, 30000);
     return () => clearInterval(checarNet);
   }, []);
@@ -60,7 +59,7 @@ const SalvarMultiplas = ({ navigation, route }) => {
         timeout: 10000,
       });
       setLocal(localizacao);
-      console.log(localizacao);
+      // console.log(localizacao);
     } catch (err) {
       console.log(err);
     }
@@ -68,7 +67,7 @@ const SalvarMultiplas = ({ navigation, route }) => {
 
   const finalizar = () => {
     setEnviando(false);
-    navigation.navigate("Listagem");
+    navigation.navigate("Fotos");
   };
 
   const despachar = () => {

@@ -5,6 +5,7 @@ import ReduxThunk from "redux-thunk";
 
 import MainNavigation from "./src/navigation/MainNavigation";
 import fotosReducer from "./src/store/reducers/fotosReducer";
+import trackersReducer from "./src/store/reducers/trackersReducer";
 import { init } from "./src/helpers/db";
 
 init()
@@ -17,6 +18,7 @@ init()
 
 const rootReducer = combineReducers({
   fotos: fotosReducer,
+  trackers: trackersReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

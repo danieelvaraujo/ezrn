@@ -5,12 +5,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Colors from "../constants/Colors";
 
-import Lista from "../screens/Lista";
+import ListaFotos from "../screens/ListaFotos";
+import ListaTrackers from "../screens/ListaTrackers";
 import SalvarUnica from "../screens/SalvarUnica";
-import Detalhes from "../screens/Detalhes";
+import DeetsFotos from "../screens/DeetsFotos";
 import SalvarMultiplas from "../screens/SalvarMultiplas";
 import Seletor from "../screens/Seletor";
-import Mapa from "../screens/Mapa";
 import Tracker from "../screens/Tracker";
 
 const Stack = createStackNavigator();
@@ -28,13 +28,18 @@ const MainNavigation = () => {
         }}
       >
         <Stack.Screen
-          name="Listagem"
-          component={Lista}
+          name="Fotos"
+          component={ListaFotos}
           options={{ title: "Lista de fotos" }}
         />
         <Stack.Screen
-          name="Detalhes"
-          component={Detalhes}
+          name="Trackers"
+          component={ListaTrackers}
+          options={{ title: "Lista de trackers" }}
+        />
+        <Stack.Screen
+          name="DeetsFotos"
+          component={DeetsFotos}
           options={{ title: "Detalhes da foto" }}
         />
         <Stack.Screen
@@ -51,11 +56,6 @@ const MainNavigation = () => {
           name="SalvarMultiplas"
           component={SalvarMultiplas}
           options={{ title: "Salvar novas fotos" }}
-        />
-        <Stack.Screen
-          name="Mapa"
-          component={Mapa}
-          options={{ title: "Trajeto" }}
         />
         <Stack.Screen
           name="Tracker"

@@ -7,7 +7,6 @@ export const SET_FOTOS = "SET_FOTOS";
 
 export const addFoto = (imagemUri, localizacao) => {
   const googleApiKey = "AIzaSyD6BlvLFCdl0ZiFoZane7T6Z9eOpP_vkcU";
-  // console.log(localizacao);
 
   return async (dispatch) => {
     const response = await fetch(
@@ -27,7 +26,6 @@ export const addFoto = (imagemUri, localizacao) => {
       throw new Error("Tive um problema com a foto. Poderia tirar novamente?");
     }
 
-    // console.log(resData);
     const endereco = resData.results[0].formatted_address;
 
     const fileName = imagemUri.split("/").pop();
