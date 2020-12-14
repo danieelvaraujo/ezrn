@@ -45,7 +45,7 @@ const Tracker = () => {
     if (status === "granted") {
       await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
         accuracy: Location.Accuracy.Balanced,
-        timeInterval: 15000,
+        timeInterval: 120000,
         distanceInterval: 1,
         foregroundService: {
           notificationTitle: "Ezdocs",

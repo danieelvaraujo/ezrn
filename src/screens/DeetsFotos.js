@@ -23,9 +23,15 @@ const DeetsFotos = ({ route, navigation }) => {
           <View style={{ marginTop: 15 }}>
             <Text style={{ fontSize: 17, fontWeight: "bold" }}>Endereço:</Text>
             <Text style={styles.endereco}> {fotoSelecionada.endereco}</Text>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-around" }}
+            >
+              <Text style={styles.coords}>Latitude: {fotoSelecionada.lat}</Text>
+              <Text style={styles.coords}>
+                Longitude: {fotoSelecionada.lng}
+              </Text>
+            </View>
           </View>
-          <Text style={styles.coords}>Latitude: {fotoSelecionada.lat}</Text>
-          <Text style={styles.coords}>Longitude: {fotoSelecionada.lng}</Text>
         </View>
       </View>
     </ScrollView>
@@ -54,15 +60,14 @@ const styles = StyleSheet.create({
   },
   endereco: {
     margin: 10,
+    padding: 5,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
   },
   coords: {
     padding: 10,
-    margin: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
-    paddingLeft: 20,
   },
   detalhes: {
     marginHorizontal: 15,

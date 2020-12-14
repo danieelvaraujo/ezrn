@@ -158,7 +158,13 @@ const SalvarUnica = ({ navigation, route }) => {
         </View>
       ) : (
         <View style={styles.form}>
-          <View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-evenly",
+            }}
+          >
             {rede ? (
               <View style={styles.bolaVerde} />
             ) : (
@@ -223,7 +229,6 @@ const styles = StyleSheet.create({
   },
   titulo: {
     fontSize: 18,
-    marginBottom: 15,
     textAlign: "center",
   },
   input: {

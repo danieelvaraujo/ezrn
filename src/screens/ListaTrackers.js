@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, View, FlatList, Button, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  Button,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import Colors from "../constants/Colors";
@@ -17,18 +24,27 @@ const ListaTrackers = ({ navigation }) => {
         data={trackers}
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => (
-          <View
-            style={{
-              padding: 15,
-              borderBottomWidth: 1,
-              borderTopWidth: 1,
-              borderColor: "#ccc",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("DeetsTracker", {
+                endereco: itemData.item.endereco,
+                trackerId: itemData.item.id,
+              })
+            }
           >
-            <Text style={{ fontSize: 18 }}>{itemData.item.endereco}</Text>
-          </View>
+            <View
+              style={{
+                padding: 15,
+                borderBottomWidth: 1,
+                borderTopWidth: 1,
+                borderColor: "#ccc",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontSize: 18 }}>{itemData.item.endereco}</Text>
+            </View>
+          </TouchableOpacity>
         )}
       />
       <View style={{ margin: 10 }}>
@@ -42,7 +58,7 @@ const ListaTrackers = ({ navigation }) => {
         <View style={{ margin: 5 }}>
           <Button
             color={Colors.foto}
-            title="Trajeto"
+            title="Novo trajeto"
             onPress={() => navigation.navigate("Tracker")}
           />
         </View>

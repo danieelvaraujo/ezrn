@@ -9,6 +9,7 @@ import ListaFotos from "../screens/ListaFotos";
 import ListaTrackers from "../screens/ListaTrackers";
 import SalvarUnica from "../screens/SalvarUnica";
 import DeetsFotos from "../screens/DeetsFotos";
+import DeetsTracker from "../screens/DeetsTracker";
 import SalvarMultiplas from "../screens/SalvarMultiplas";
 import Seletor from "../screens/Seletor";
 import Tracker from "../screens/Tracker";
@@ -40,6 +41,11 @@ const MainNavigation = () => {
         <Stack.Screen
           name="DeetsFotos"
           component={DeetsFotos}
+          options={{ title: "Detalhes da foto" }}
+        />
+        <Stack.Screen
+          name="DeetsTracker"
+          component={DeetsTracker}
           options={{ title: "Detalhes da foto" }}
         />
         <Stack.Screen

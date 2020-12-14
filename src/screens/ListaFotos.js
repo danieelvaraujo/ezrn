@@ -43,7 +43,7 @@ const ListaFotos = ({ navigation }) => {
             titulo={itemData.item.titulo}
             endereco={itemData.item.endereco}
             fotoSelecionada={() =>
-              navigation.navigate("Detalhes", {
+              navigation.navigate("DeetsFotos", {
                 tituloFoto: itemData.item.titulo,
                 fotoId: itemData.item.id,
                 endereco: itemData.item.endereco,
@@ -66,7 +66,7 @@ const ListaFotos = ({ navigation }) => {
         <View style={{ margin: 5 }}>
           <Button
             color={Colors.foto}
-            title="Trajeto"
+            title="Novo trajeto"
             onPress={() => navigation.navigate("Tracker")}
           />
         </View>
